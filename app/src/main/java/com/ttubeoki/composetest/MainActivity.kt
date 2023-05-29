@@ -27,7 +27,12 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Greeting("Android")
                     Surface {
-                        Text(text = "HELLO")
+                        Text(
+                            modifier = Modifier.background(
+                                Color.Black
+                            ),
+                            text = "HELLO"
+                        )
                     }
                 }
             }
