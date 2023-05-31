@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -57,3 +59,35 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+
+//TopAppBar(
+//title = ({ Text ("TopAppBar") }),
+//navigationIcon = {
+//    IconButton(onClick = {}) {
+//        Icon(
+//            imageVector = Icons.Filled.Send,
+//            contentDescription = ""
+//        )
+//    }
+//},
+//actions = {
+//    IconButton(onClick = {}) {
+//        Icon(
+//            imageVector = Icons.Filled.Send,
+//            contentDescription = ""
+//        )
+//    }
+//    IconButton(onClick = {}) {
+//        Icon(
+//            imageVector = Icons.Filled.Send,
+//            contentDescription = ""
+//        )
+//    }
+//    IconButton(onClick = {}) {
+//        Icon(
+//            imageVector = Icons.Filled.Send,
+//            contentDescription = ""
+//        )
+//    }
+//}
+//)
