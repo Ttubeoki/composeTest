@@ -3,97 +3,143 @@ package com.ttubeoki.composetest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Checkbox
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.IconButton
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.RadioButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kr.co.fastcampus.part1.chapter4_14.ui.theme.AnimationTheme
 
 class TestOne : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ScaffoldTheme {
+            AnimationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ScaffoldEx()
+                    AnimationEx()
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun CheckBoxWithContent(
-    checked: Boolean,
-    toggleState: () -> Unit,
-    content: @Composable RowScope.() -> Unit
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { toggleState() }
+fun AnimationEx() {
+    var helloWorldVisible by remember { mutableStateOf(true) }
+    var isRed by remember { mutableStateOf(false) }
+
+    //val backgroundColor = Color.LightGray
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isRed) Color.Red else Color.White
+    )
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .background(backgroundColor)
     ) {
-        Checkbox(
-            checked = checked,
-            onCheckedChange = { toggleState() },
-        )
-        content()
-    }
-}
 
-@Composable
-fun ScaffoldEx() {
-    var checked by remember { mutableStateOf(false) }
-
-    Scaffold(topBar = {
-        // 스텝 1: `topBar`를 `TopAppBar`로 채워 봅시다.
-        TopAppBar(
-            navigationIcon = {
-                IconButton(onClick = {}) {
-                    Image(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = ""
-                    )
-                }
-            },
-            title = {
-                Text(text = "ScaffoldEx")
-            }
-        )
-    },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
-
-            }
+        AnimatedVisibility(
+            visible = helloWorldVisible,
+            enter = scaleIn() + expandHorizontally(),
+            exit = fadeOut() + shrinkHorizontally()
+        ) {
+            Text(text = "Hello World!")
         }
-    ) {
-        Surface(modifier = Modifier.padding(8.dp)) {
-            // 스텝 2: 아래에 CheckBoxWithContent를 넣어봅시다.
-            CheckBoxWithContent(
-                checked = checked,
-                toggleState = { checked = !checked }) {
-                Text(text = "hi")
-            }
+
+        Row(
+            Modifier.selectable(
+                selected = helloWorldVisible,
+                onClick = {
+                    helloWorldVisible = true
+                }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected = helloWorldVisible,
+                onClick = { helloWorldVisible = true }
+            )
+            Text(
+                text = "Hello World 보이기"
+            )
+        }
+
+        Row(
+            Modifier.selectable(
+                selected = !helloWorldVisible,
+                onClick = {
+                    helloWorldVisible = false
+                }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected = !helloWorldVisible,
+                onClick = { helloWorldVisible = false }
+            )
+            Text(
+                text = "Hello World 감추기"
+            )
+        }
+
+        Text(text = "배경 색을 바꾸어봅시다.")
+
+        Row(
+            Modifier.selectable(
+                selected = !isRed,
+                onClick = {
+                    isRed = false
+                }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected = !isRed,
+                onClick = { isRed = false }
+            )
+            Text(
+                text = "흰색"
+            )
+        }
+
+        Row(
+            Modifier.selectable(
+                selected = isRed,
+                onClick = {
+                    isRed = true
+                }
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected = isRed,
+                onClick = { isRed = true }
+            )
+            Text(
+                text = "빨간색"
+            )
         }
     }
 }
@@ -101,7 +147,7 @@ fun ScaffoldEx() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ScaffoldTheme {
-        ScaffoldEx()
+    AnimationTheme {
+        AnimationEx()
     }
 }
